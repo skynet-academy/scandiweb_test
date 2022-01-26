@@ -7,7 +7,7 @@ import {
     Link, 
     Redirect
 } from "react-router-dom"
-import BoxProduct from "./BoxProduct.js"
+import Products from "./Products.js"
 import AddProduct from "./AddProduct.js"
 
 export default class App extends Component{
@@ -19,7 +19,7 @@ export default class App extends Component{
             <Router>
                 <Routes>
                     <Route path="">
-                        <Route path="/" element={<BoxProduct />}>
+                        <Route path="/" element={<Products />}>
                         </Route>
                         <Route path="add-product/" element={<AddProduct />}>
                         </Route>

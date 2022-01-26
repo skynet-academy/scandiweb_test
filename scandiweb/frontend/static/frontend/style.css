@@ -1,3 +1,93 @@
 :root{
-    
+    --small: 8px;
+    --medium: 16px;
+    --large: 32px;
 }
+
+.products-list, .product-add{
+    width: 80%;
+    margin: 3rem auto;
+}
+
+.product-nav, .form-var{
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.product-nav h1, .form-var h1{
+    margin: 0;
+}
+
+.buttons, .formButtons{
+    display: flex;
+}
+
+.box{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.boxProduct{
+    width: 210px;
+    height: 150px;
+    overflow-wrap: break-word;
+    border: 2px solid black;
+    padding: var(--small);
+    margin: var(--medium);
+}
+
+.boxProduct p{
+    text-align: center;
+    margin: var(--small) 0;
+}
+
+.buttons div, .formButtons div{
+    margin: var(--small);
+}
+
+#addItem, #delete-product-btn, #save, #cancel{
+    background-color: white;
+    cursor: pointer;
+    border: 2px solid black;
+    box-shadow: 0 2px 2px;
+}
+
+#addItem:hover, #save:hover{
+    background-color: #33cc33;
+    color: white
+}
+
+#delete-product-btn:hover, #cancel:hover{
+    background-color: #ff3300 ;
+    color: white;
+}
+
+#product_form{
+    width: 500px;
+    height: 500px;
+}
+
+#detail-product{
+    display: flex;
+    flex-direction: column;
+    margin: 2rem auto;
+    border: 2px solid black;
+    padding: var(--small);
+}
+
+#product_form section, #detail-product div{
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem;
+    width: 70%;
+}
+
+#optionSelected{
+    width: 100%;
+    height: 300px;
+}
+
+
+
+

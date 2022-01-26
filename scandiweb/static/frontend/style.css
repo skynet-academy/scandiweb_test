@@ -1,0 +1,33 @@
+:root{
+    --small: 8px;
+    --medium: 16px;
+    --large: 32px;
+}
+
+.products-list{
+    width: 80%;
+    margin: 3rem auto;
+}
+
+.product-nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.product-nav h1{
+    margin: 0;
+}
+
+.buttons{
+    display: flex;
+}
+
+.box{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.boxProduct{
+    margin: var(--small);
+}
