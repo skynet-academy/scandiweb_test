@@ -8,7 +8,7 @@ export default class BoxProduct extends Component{
     render(){
         return(
             <div className="boxProduct"> 
-                <input className="delete-checkbox" type="checkbox" name="radioBtn" />
+                <input className="delete-checkbox" type="checkbox" name="radioBtn" value={this.props.product.id} />
                 <div className="details">
                     <p>{this.props.product.sku}</p>
                     <p>{this.props.product.name}</p>

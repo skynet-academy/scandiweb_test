@@ -11,6 +11,7 @@ export default class Products extends Component{
         }
         this.showProducts()
     };
+
     showProducts = () => {
         let url = "/api/list-products/"
         fetch(url, {
@@ -24,14 +25,13 @@ export default class Products extends Component{
                 })
             })
     }
-
+    
     renderProducts = () => {
         return this.state.products.map(
             (product, i) =>(
-                <BoxProduct key={i} product={product} />
+                <BoxProduct key={i} id={i} product={product} />
             ));
     }
-
     render(){
         return(
             <div className="products-list">

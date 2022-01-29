@@ -9,6 +9,10 @@
     margin: 3rem auto;
 }
 
+.form-var{
+    width: 100%;
+}
+
 .product-nav, .form-var{
     display: flex;
     justify-content: space-between;
@@ -63,9 +67,9 @@
     color: white;
 }
 
-#product_form{
+.data{
     width: 500px;
-    height: 500px;
+    height: 200px;
 }
 
 #detail-product{

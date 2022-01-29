@@ -31,8 +31,10 @@ def addProduct(request):
     serializer = ProductSerializer(data=request.data)
     if(serializer.is_valid()):
         serializer.save()
-    
-    return Response(serializer.data)
+        return Response(serializer.data, status=201)
+    else:
+        print(serializer.errors)
+        return Response({'errors': serializer.errors}, status=400)
 
 @api_view(['POST'])
 def updateProduct(request, pk):
@@ -45,6 +47,7 @@ def updateProduct(request, pk):
 
 @api_view(['DELETE'])
 def deleteProduct(request, pk):
+    print(pk)
     product = Product.objects.get(id=pk)
     product.delete()
 

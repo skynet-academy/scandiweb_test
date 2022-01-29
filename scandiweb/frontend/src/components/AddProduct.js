@@ -6,10 +6,74 @@ export default class AddProduct extends Component{
         super(props)
     }
     
-    saveProduct = () =>{
-        document.getElementById('product_form')
-        console.log('submiting')
+    saveProduct = (e) =>{
+        e.preventDefault();
+        let form = document.getElementById('product_form')
+        let productValue = document.getElementById('productType').value;
+        let sku = document.getElementById('sku').value
+        let name = document.getElementById('name').value
+        let price = document.getElementById('price').value
+        let errors = document.getElementById('errors')
+        let data = {
+            'sku': sku,
+            'name': name,
+            'price': price,
+            'product_details': '',
+        
+        }
+        if(productValue === 'furniture'){
+            let height = document.getElementById('height').value;
+            let width = document.getElementById('width').value;
+            let length = document.getElementById('length').value;
+            if(height == '' || width == '' || length == ''){
+                data['product_details'] = null;
+            } else{
+                data['product_details'] = `Dimension: ${height}x${width}x${length}`;
+            }
+        } else if(productValue === 'dvd'){
+            let size = document.getElementById('size').value;
+            if(size == ''){
+                data['product_details'] = null;
+            } else{
+                data['product_details'] = `Size: ${size}MB`;
+            }
+        } else if(productValue === 'book'){
+            let weight = document.getElementById('weight').value;
+            if(weight == ''){
+                data['product_details'] = null;
+            } else{
+                data['product_details'] = `Weight: ${weight}KG`;
+            }
+        }
+
+        let url = '/api/add-product/'
+        let csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+        fetch(url,{
+            method: 'POST',
+            headers: {'content-type': 'application/json', 'X-CSRFToken': csrftoken},
+            body: JSON.stringify(data)
+        })
+        .then(async response => {
+            const isJson = response.headers.get('content-type')?.includes('application/json');
+            data = isJson ? await response.json() : null;  
+            if(!response.ok){
+                const error = (data && data.message) || response.status;
+            }
+            else{
+                e.preventDefault();
+                window.location.href = '/'
+            }
+            errors.innerHTML = '' 
+            for(let key in data.errors){
+                errors.innerHTML += `<p>'${key}'  ${data.errors[key][0]}</p>`
+            }
+        })
+        .catch((error) =>{
+            errors.innerHTML = `Error: ${error}`
+            console.log('Error', error)
+        })
     }
+
     cancelProduct = (e) =>{
         e.preventDefault();
         window.location.href = '/'
@@ -26,7 +90,7 @@ export default class AddProduct extends Component{
             <div id='detail-product'>
                 <div>
                     <label>Size(MB)</label>
-                    <input type="input" />
+                    <input id="size" type="number" required=true />
                 </div>
                 <p>*Please provide the CD's size in MB when type: DVD is selected*</p>
             </div>
@@ -37,15 +101,15 @@ export default class AddProduct extends Component{
             <div id='detail-product'>
                 <div>
                     <label>Height(CM)</label>
-                    <input type="input" />
+                    <input id="height" type="number" required=true />
                 </div>
                 <div>
                     <label>Width(CM)</label>
-                    <input type="input" />
+                    <input id="width" type="number" required=true />
                 </div>
                 <div>
                     <label>Length(CM)</label>
-                    <input type="input" />
+                    <input id="length" type="number" required=true />
                 </div>
                 <p>*Please provide the dimensions in HxWxL format when type: furniture is selected*</p>
             </div>
@@ -56,7 +120,7 @@ export default class AddProduct extends Component{
             <div id='detail-product'>
                 <div>
                     <label>Weight(KG)</label>
-                    <input type="input" />
+                    <input id="weight" type="number" required=true />
                 </div>
                 <p>*Please provide the dimensions in KG format when type: book is selected*</p>
             </div>
@@ -66,39 +130,43 @@ export default class AddProduct extends Component{
     render(){
         return(
             <div className="product-add">
-                <div className="form-var">
-                    <h1>Product Add</h1>
-                    <div className="formButtons">
-                        <div>
-                            <button id="save" onClick={this.saveProduct} type="submit">Save</button>
-                        </div>
-                        <div>
-                            <button id="cancel" onClick={this.cancelProduct} type="button">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-                <hr />
                 <form id="product_form" action="" method="POST">
                     <CSRFToken />
-                    <section>
-                        <label htmlFor="">SKU</label>
-                        <input id="sku" type="text" placeholder=" sku" />
-                    </section>
-                    <section>
-                        <label htmlFor="">Name</label>
-                        <input id="name" type="text" placeholder=" name" />
-                    </section>
-                    <section>
-                        <label htmlFor="">Price</label>
-                        <input id="price" type="number" placeholder=" price" />
-                    </section>
-                    <label htmlFor="switcher">Type Switcher </label>
-                    <select id="productType" name="switcher" onChange={this.selectOption}>
-                        <option value="">Type Switcher</option>
-                        <option id="DVD" value="dvd">DVD</option>
-                        <option id="Furniture" value="furniture">Furniture</option>
-                        <option id="Book" value="book">Book</option>
-                    </select>
+                    <div className="form-var">
+                        <h1>Product Add</h1>
+                        <div className="formButtons">
+                            <div>
+                                <button id="save" onClick={this.saveProduct} type="submit">Save</button>
+                            </div>
+                            <div>
+                                <button id="cancel" onClick={this.cancelProduct} type="button">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div className="data">
+                        <section>
+                            <label htmlFor="">SKU</label>
+                            <input id="sku" type="text" placeholder=" sku" />
+                        </section>
+                        <section>
+                            <label htmlFor="">Name</label>
+                            <input id="name" type="text" placeholder=" name" />
+                        </section>
+                        <section>
+                            <label htmlFor="">Price</label>
+                            <input id="price" type="number" placeholder=" price" />
+                        </section>
+                        <label htmlFor="switcher">Type Switcher </label>
+                        <select id="productType" name="switcher" onChange={this.selectOption}>
+                            <option value="">Type Switcher</option>
+                            <option id="DVD" value="dvd">DVD</option>
+                            <option id="Furniture" value="furniture">Furniture</option>
+                            <option id="Book" value="book">Book</option>
+                        </select>
+                    </div>
+                    <div id="errors">
+                    </div>
                     <div id="optionSelected">
                     </div>
                 </form>
